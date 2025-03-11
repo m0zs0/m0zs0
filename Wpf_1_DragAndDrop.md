@@ -170,7 +170,7 @@ namespace DragDropExample
 
 
 
-II. Fejlesszük tovább a drag&drop élményt, és adjunk vizuális visszajelzést, ami az egérrel mozog vonszolás közben (Content).
+# II. Fejlesszük tovább a drag&drop élményt, és adjunk vizuális visszajelzést, ami az egérrel mozog vonszolás közben (Content).
 
 A WPF-ben a drag&drop események közül a következők a leggyakoribbak:
 - PreviewMouseLeftButtonDown: Már használjuk a drag indítására.
