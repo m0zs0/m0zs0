@@ -216,16 +216,27 @@ A WPF-ben a drag&drop események közül a következők a leggyakoribbak:
 ```
 
 **Ablak definíciója:**
+
 Az AllowDrop="True" és a DragOver="Window_DragOver" azt jelzi, hogy az egész ablak fogadhat drag&drop eseményeket, és a Window_DragOver metódus kezeli az egér mozgását a vonszolás alatt. Ez lehetővé teszi, hogy a dragVisual az ablak teljes területén simán mozogjon.
+
 **Grid elrendezés:**
+
 Két sor van definiálva: az első (Height="Auto") a gombok számára, a második (Height="*") a drop terület és a TextBlock számára, így az alsó sor kitölti a maradék helyet.
+
 **Gombok (StackPanel):**
+
 Három gomb (10, 20, 50) vízszintesen rendezve, mindegyikhez kötve a PreviewMouseLeftButtonDown esemény, amely elindítja a drag műveletet.
+
 **Drop terület (Border):**
+
 A Grid.Row="1"-ben helyezkedik el, AllowDrop="True"-val, és három eseménykezelője van: DragEnter (belépéskor), Drop (eldobáskor), DragLeave (kilépéskor). Ez a terület felelős a számok fogadásáért és a vizuális visszajelzésért (zöld háttér).
+
 **TextBlock (txtSum):**
+
 A sum értékét jeleníti meg, a Grid.Row="1"-ben középre igazítva. Az IsHitTestVisible="False" biztosítja, hogy ne zavarja a Border drag&drop eseményeit, így a drop a TextBlock felett is működik.
+
 **Canvas (dragCanvas):**
+
 Az egész ablakot lefedi (Grid.Row="0" Grid.RowSpan="2"), és a legutolsó elemként van definiálva a Grid-ben, ezért a legmagasabb Z-indexszel rendelkezik. Ez azt jelenti, hogy a dragVisual (a vonszolt szám) minden más elem fölött jelenik meg. Miért van szükség a Canvas-ra? Mert szabadon pozícionálhatjuk a dragVisual-t az egérhez igazítva, amit más elrendezési panelek (pl. Grid, StackPanel) nem tesznek lehetővé ilyen egyszerűen. Miért van felül? Mert a Grid-ben az utolsó elemként definiált, így a Z-rendben a legfelső réteg, garantálva, hogy a dragVisual látható maradjon a Border és a TextBlock felett.
 
 
@@ -339,18 +350,33 @@ namespace Wpf_1_draganddrop
 ```
 
 **Változók:**
+
 sum: A droppolt számok összege, amit a txtSum TextBlock mutat.
+
 dragVisual: A vonszolt számot megjelenítő TextBlock, amit dinamikusan hozunk létre és távolítunk el.
+
 defaultBrush és overBrush: Színváltozók az alapértelmezett (narancsvörös) és a Border feletti (világoszöld) háttérhez.
+
 **Button_PreviewMouseLeftButtonDown:**
+
 Amikor egy gombra kattintasz, létrehozza a dragVisual-t a gomb tartalmával (pl. "10"), narancsvörös háttérrel, és az egér kezdeti pozíciójához igazítja (initialPosition.X + 5, Y + 5). A DragDrop.DoDragDrop elindítja a drag műveletet, az adat pedig a gomb szövege. A drag végeztével a dragVisual-t eltávolítjuk a Canvas-ról. Miért kell a Canvas? Mert itt adjuk hozzá a dragVisual-t, és a Canvas abszolút pozícionálási képessége lehetővé teszi, hogy az egérhez igazítsuk.
+
 **Window_DragOver:**
+
 Az ablakszintű DragOver esemény folyamatosan fut, amíg a drag művelet tart, és frissíti a dragVisual pozícióját az egérhez képest (X + 5, Y - 25). A Y - 25 eltolás valószínűleg azt szolgálja, hogy a szám az egérkurzor felett jelenjen meg, ne alatta. A Debug.WriteLine segít ellenőrizni az egér pozícióját. Miért kell a Canvas? Mert az e.GetPosition(dragCanvas) a Canvas koordinátarendszerét használja, ami az egész ablakot lefedi, így az egérkövetés az ablak bármely pontján működik.
+
 **DropArea_DragEnter:**
+
 Amikor az egér a Border fölé lép, ellenőrzi, hogy az átvitt adat string-e. Ha igen, a dragVisual háttere zöldre (overBrush) vált, és az e.Effects = DragDropEffects.Copy jelzi, hogy a drop engedélyezett.
+
 DropArea_DragLeave:
+
 Amikor az egér elhagyja a Border-t, a dragVisual háttere visszaáll narancsvörösre (defaultBrush).
+
 **DropArea_Drop:**
+
 Ha a Border-re dobod a számot, az átvitt stringet számmá alakítja (int.TryParse), hozzáadja a sum-hoz, frissíti a txtSum szövegét, majd eltávolítja a dragVisual-t. A TextBlock IsHitTestVisible="False" tulajdonsága miatt ez a Border bármely pontján működik.
+
 **Miért van a Canvas felül?**
+
 A dragCanvas a Grid utolsó elemeként van definiálva, így a legmagasabb Z-indexszel rendelkezik. Ez biztosítja, hogy a dragVisual a Border, a TextBlock és a gombok felett maradjon, különben a vonszolt szám eltakaródna, amikor ezek fölött mozog.
