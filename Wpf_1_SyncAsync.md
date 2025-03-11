@@ -77,3 +77,7 @@ Az async kulcsszó jelzi, hogy a metódus aszinkron módon fut.
 Az await kulcsszó megvárja a Task.Delay befejezését, de közben nem blokkolja az UI szálat. A vezérlés visszaadódik az úgynevezett "hívó kontextushoz" (itt az UI szálhoz), és a folytatás automatikusan az UI szálon történik a Task befejezése után.
 
 Ez a mechanizmus a .NET Task Parallel Library (TPL)-jére épül.
+
+Tesztelés
+
+Nyomd meg a gombot, és próbáld meg mozgatni az ablakot. Sikerülni fog.
