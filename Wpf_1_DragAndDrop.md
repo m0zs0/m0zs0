@@ -229,7 +229,7 @@ Három gomb (10, 20, 50) vízszintesen rendezve, mindegyikhez kötve a PreviewMo
 
 **Drop terület (Border):**
 
-A Grid.Row="1"-ben helyezkedik el, AllowDrop="True"-val, és három eseménykezelője van: DragEnter (belépéskor), Drop (eldobáskor), DragLeave (kilépéskor). Ez a terület felelős a számok fogadásáért és a vizuális visszajelzésért (zöld háttér).
+A Grid.Row="1"-ben helyezkedik el, AllowDrop="True"-val, és három eseménykezelője van: DragEnter (belépéskor), Drop (eldobáskor), DragLeave (kilépéskor). Ez a terület felelős a számok fogadásáért és a vizuális visszajelzésért (zöld háttér). A TextBlock a Border-ből azért került ki, hogy a Border Drop eseménye zavartalanul működjön az egész területén, beleértve a TextBlock által fedett részeket is.
 
 **TextBlock (txtSum):**
 
