@@ -285,7 +285,7 @@ namespace Wpf_1_draganddrop
                 // Kezdeti pozíció beállítása
                 Point initialPosition = e.GetPosition(dragCanvas);
                 Canvas.SetLeft(dragVisual, initialPosition.X + 5);
-                Canvas.SetTop(dragVisual, initialPosition.Y + 5);
+                Canvas.SetTop(dragVisual, initialPosition.Y - 25);
 
                 // Drag indítása az ablakon keresztül
                 DragDrop.DoDragDrop(button, button.Content.ToString(), DragDropEffects.Copy);
@@ -359,7 +359,7 @@ defaultBrush és overBrush: Színváltozók az alapértelmezett (narancsvörös)
 
 **Button_PreviewMouseLeftButtonDown:**
 
-Amikor egy gombra kattintasz, létrehozza a dragVisual-t a gomb tartalmával (pl. "10"), narancsvörös háttérrel, és az egér kezdeti pozíciójához igazítja (initialPosition.X + 5, Y + 5). A DragDrop.DoDragDrop elindítja a drag műveletet, az adat pedig a gomb szövege. A drag végeztével a dragVisual-t eltávolítjuk a Canvas-ról. Miért kell a Canvas? Mert itt adjuk hozzá a dragVisual-t, és a Canvas abszolút pozícionálási képessége lehetővé teszi, hogy az egérhez igazítsuk.
+Amikor egy gombra kattintasz, létrehozza a dragVisual-t a gomb tartalmával (pl. "10"), narancsvörös háttérrel, és az egér kezdeti pozíciójához igazítja (initialPosition.X + 5, Y - 25). A DragDrop.DoDragDrop elindítja a drag műveletet, az adat pedig a gomb szövege. A drag végeztével a dragVisual-t eltávolítjuk a Canvas-ról. Miért kell a Canvas? Mert itt adjuk hozzá a dragVisual-t, és a Canvas abszolút pozícionálási képessége lehetővé teszi, hogy az egérhez igazítsuk.
 
 **Window_DragOver:**
 
