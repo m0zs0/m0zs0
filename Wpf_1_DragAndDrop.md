@@ -1,6 +1,8 @@
 # I. Drag & Drop programozása:
-[1] Indítás: A PreviewMouseLeftButtonDown elindítja a drag műveletet az érme értékével.
+[1] Indítás: A PreviewMouseLeftButtonDown elindítja a drag műveletet a button Content-jével.
+
 [2] Ellenőrzés: A DragEnter biztosítja, hogy csak megfelelő adat dobható a területre.
+
 [3] Lezárás: A Drop megkapja az adatot, és feldolgozza (pl. hozzáadja az összeghez).
 
 
