@@ -363,7 +363,7 @@ Amikor egy gombra kattintasz, létrehozza a dragVisual-t a gomb tartalmával (pl
 
 **Window_DragOver:**
 
-Az ablakszintű DragOver esemény folyamatosan fut, amíg a drag művelet tart, és frissíti a dragVisual pozícióját az egérhez képest (X + 5, Y - 25). A Y - 25 eltolás valószínűleg azt szolgálja, hogy a szám az egérkurzor felett jelenjen meg, ne alatta. A Debug.WriteLine segít ellenőrizni az egér pozícióját. Miért kell a Canvas? Mert az e.GetPosition(dragCanvas) a Canvas koordinátarendszerét használja, ami az egész ablakot lefedi, így az egérkövetés az ablak bármely pontján működik.
+Az ablakszintű DragOver esemény folyamatosan fut, amíg a drag művelet tart, és frissíti a dragVisual pozícióját az egérhez képest (X + 5, Y - 25). A Y - 25 eltolás azt szolgálja, hogy a szám az egérkurzor felett jelenjen meg, ne alatta. A **Debug.WriteLine** segít ellenőrizni az egér pozícióját. Miért kell a Canvas? Mert az e.GetPosition(dragCanvas) a Canvas koordinátarendszerét használja, ami az egész ablakot lefedi, így az egérkövetés az ablak bármely pontján működik.
 
 **DropArea_DragEnter:**
 
