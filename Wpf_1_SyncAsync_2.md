@@ -68,13 +68,13 @@ Tehát a végrehajtás a következőképpen alakul:
 [Vége] -----> [UI most frissül, csak a "Kész!..." látható]
 ```
 
-A StartButton.IsEnabled = false beállítása megtörténik a memóriában, és ez a változás jelzésre kerül a WPF-nek. Bár a gomb letiltása technikailag azonnal érvénybe lép (a gomb nem reagál kattintásra), a vizuális renderelés (pl. a gomb szürkén megjelenése) nem feltétlenül történik meg azonnal, mert a fő szál még nem adta át a vezérlést a renderelési ciklusnak.
+A `StartButton.IsEnabled = false` beállítása megtörténik a memóriában, és ez a változás jelzésre kerül a WPF-nek. Bár a gomb letiltása technikailag azonnal érvénybe lép (a gomb nem reagál kattintásra), a vizuális renderelés (pl. a gomb szürkén megjelenése) nem feltétlenül történik meg azonnal, mert a fő szál még nem adta át a vezérlést a renderelési ciklusnak.
 
-A MessageBox.Show("Gomb letiltva, most jön a Sleep"); meghívása egy modális ablakot hoz létre, amely saját belső üzenethurkot futtat a fő szálon. Ez lehetővé teszi, hogy az ablak megjelenjen, és a felhasználó interakcióba lépjen vele (pl. az "OK" gombra kattintson). A MessageBox megjelenése közben a WPF-nek lehetősége van feldolgozni az előzőleg beállított UI-változásokat (pl. a gomb letiltását), így a gomb szürkén jelenhet meg az ablak alatt. Ezért a MessageBox láthatóvá válik, mielőtt a kód továbbhaladna.
+A `MessageBox.Show("Gomb letiltva, most jön a Sleep");` meghívása egy modális ablakot hoz létre, amely saját belső üzenethurkot futtat a fő szálon. Ez lehetővé teszi, hogy az ablak megjelenjen, és a felhasználó interakcióba lépjen vele (pl. az "OK" gombra kattintson). A MessageBox megjelenése közben a WPF-nek lehetősége van feldolgozni az előzőleg beállított UI-változásokat (pl. a gomb letiltását), így a gomb szürkén jelenhet meg az ablak alatt. Ezért a MessageBox láthatóvá válik, mielőtt a kód továbbhaladna.
 
-A ResultText.Text = "Feldolgozás..." beállítása megtörténik a memóriában, miután a MessageBox bezárul, de a képernyőn nem jelenik meg, mert a fő szál rögtön ezután a Thread.Sleep(3000) hívásba fut, ami blokkolja a további renderelést. A WPF nem jut el a renderelési fázisig, mert a fő szál "alszik".
+A `ResultText.Text = "Feldolgozás..."` beállítása megtörténik a memóriában, miután a MessageBox bezárul, de a képernyőn nem jelenik meg, mert a fő szál rögtön ezután a Thread.Sleep(3000) hívásba fut, ami blokkolja a további renderelést. A WPF nem jut el a renderelési fázisig, mert a fő szál "alszik".
 
-A Thread.Sleep(3000) hívás 3 másodpercre blokkolja a fő szálat, vagyis a szál nem végez semmilyen más feladatot – beleértve a UI frissítését is –, így a "Feldolgozás..." szöveg nem látható a képernyőn.
+A `Thread.Sleep(3000)` hívás 3 másodpercre blokkolja a fő szálat, vagyis a szál nem végez semmilyen más feladatot – beleértve a UI frissítését is –, így a "Feldolgozás..." szöveg nem látható a képernyőn.
 
 Amikor a Thread.Sleep véget ér, a fő szál továbbfut, és végrehajtja a ResultText.Text = "Kész! A művelet befejeződött." utasítást. Ez a szöveg is beállítódik a memóriában (a ResultText objektum tulajdonsága frissül), de a képernyőn még mindig nem jelenik meg, mert a fő szál nem áll meg itt, hogy átadja a vezérlést a WPF renderelő rendszerének.
 
@@ -136,38 +136,38 @@ Az aszinkron kód esetében a fő különbség az, hogy a fő szál nem blokkol�
 
 Az aszinkron kódban a fő szál (UI thread) továbbra is egyetlen szálként működik, de az async és await használatával lehetővé tesszük, hogy a szál ne blokkolódjon hosszú műveletek (pl. várakozás) alatt. Nézzük meg, mi történik soronként:
 
-private async void StartButton_Click(object sender, RoutedEventArgs e):
+`private async void StartButton_Click(object sender, RoutedEventArgs e)`:
 A metódus async kulcsszóval van jelölve, ami azt jelzi, hogy aszinkron műveleteket tartalmazhat, és Task-okat visszaadhat (bár itt void, mert eseménykezelő).
 A fő szál kezdi el a metódus végrehajtását, amikor a gombra kattintanak.
 
-StartButton.IsEnabled = false;:
+`StartButton.IsEnabled = false;`:
 A gomb IsEnabled tulajdonsága false-ra állítódik a memóriában, ami azonnal jelzi a WPF-nek, hogy a gombot le kell tiltani.
 A fő szál még nem adta át a vezérlést az üzenethuroknak, de a következő utasítások előtt a WPF-nek lehetősége lesz renderelni, ha szükséges.
 
-MessageBox.Show("Gomb letiltva, most jön a Sleep");:
+`MessageBox.Show("Gomb letiltva, most jön a Sleep");`:
 Ez egy modális ablakot hoz létre, amely blokkolja a kód további végrehajtását, amíg a felhasználó nem zárja be (pl. az "OK" gombra kattint).
 A MessageBox saját belső üzenethurkot futtat a fő szálon, ami lehetővé teszi az ablak megjelenítését és az interakciót.
 A StartButton.IsEnabled = false hatása ekkor renderelésre kerülhet, mert a MessageBox belső hurka feldolgozza a WPF üzenetsorát, így a gomb szürkén jelenhet meg az ablak alatt.
 Amikor a felhasználó bezárja a MessageBox-ot, a fő szál folytatja a metódus végrehajtását.
 
-ResultText.Text = "Feldolgozás...";:
+`ResultText.Text = "Feldolgozás...";`:
 A ResultText szövege a memóriában "Feldolgozás..."-ra állítódik.
 Mivel ez a sor a MessageBox után fut, és még nem következik semmilyen blokkoló művelet, a fő szál hamarosan visszaadja a vezérlést az üzenethuroknak (a következő await miatt), így a WPF frissítheti a UI-t.
 A "Feldolgozás..." szöveg láthatóvá válik a képernyőn, mert a renderelési ciklus futása nem akad meg.
 
-await Task.Delay(3000);:
+`await Task.Delay(3000);`:
 Ez a sor egy 3 másodperces aszinkron várakozást indít el. A Task.Delay egy Task objektumot hoz létre, amely a háttérben számolja az időt, és nem blokkolja a fő szálat.
 Az await kulcsszó miatt a metódus itt "szünetel", és a vezérlés visszaadódik a hívó üzenethuroknak (a WPF eseménykezelő rendszerének).
 A fő szál szabad marad, és az üzenethurok folytatja a munkát: feldolgozza az eseményeket (pl. egérmozgás, kattintások), és lehetővé teszi a WPF számára, hogy kirajzolja a "Feldolgozás..." szöveget.
 A UI reszponzív marad a 3 másodperc alatt, tehát az alkalmazás nem "fagy le".
 3 másodperc elteltével a Task.Delay befejeződik, és a fő szál folytatja a metódus végrehajtását a következő sorral.
 
-ResultText.Text = "Kész! A művelet befejeződött.";:
+`ResultText.Text = "Kész! A művelet befejeződött.";`:
 A ResultText szövege a memóriában "Kész! A művelet befejeződött."-re frissül.
 Mivel nincs további blokkolás, a fő szál hamarosan befejezi a metódust, és az üzenethurok újra lehetőséget kap a renderelésre.
 A "Kész!..." szöveg megjelenik a képernyőn, mert a WPF feldolgozza ezt a változást a következő renderelési ciklusban.
 
-StartButton.IsEnabled = true;:
+`StartButton.IsEnabled = true;`:
 A gomb IsEnabled tulajdonsága visszaáll true-ra a memóriában, így a gomb újra engedélyezve lesz.
 Ez a változás is renderelésre kerül a metódus végén, amikor a WPF frissíti a UI-t.
 
@@ -177,8 +177,8 @@ A WPF egyetlen frissítési ciklusban kirajzolja az aktuális állapotot: a "Ké
 
 
 **Összegzés:**
-Az async jelzi, hogy a metódus aszinkron műveleteket tartalmazhat, és lehetővé teszi, hogy a metódus "szüneteljen" anélkül, hogy blokkolná a fő szálat.
-Az await megvárja a mögötte lévő Task befejezését, de közben a fő szál felszabadul, és visszaadja a vezérlést az üzenethuroknak. A Task maga nem feltétlenül fut külön szálon (pl. Task.Delay esetében nem), hanem egy aszinkron mechanizmust használ.
+Az `async` jelzi, hogy a metódus aszinkron műveleteket tartalmazhat, és lehetővé teszi, hogy a metódus "szüneteljen" anélkül, hogy blokkolná a fő szálat.
+Az `await` megvárja a mögötte lévő Task befejezését, de közben a fő szál felszabadul, és visszaadja a vezérlést az üzenethuroknak. A Task maga nem feltétlenül fut külön szálon (pl. Task.Delay esetében nem), hanem egy aszinkron mechanizmust használ.
 Amikor az await-elt Task befejeződik (pl. 3 másodperc múlva), a metódus folytatása visszaáll a fő szálra, és a kód továbbfut ott, ahol az await "szüneteltette".
 
 
