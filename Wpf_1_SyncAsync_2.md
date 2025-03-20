@@ -43,7 +43,7 @@ private void StartButton_Click(object sender, RoutedEventArgs e)
 
 
 Tehát a végrehajtás a következőképpen alakul:
-`
+```console
 [StartButton_Click esemény elindul]
           |
           v
