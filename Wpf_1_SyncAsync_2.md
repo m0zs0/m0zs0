@@ -66,7 +66,7 @@ Tehát a végrehajtás a következőképpen alakul:
           |
           v
 [Vége] -----> [UI most frissül, csak a "Kész!..." látható]
-`
+```
 
 A StartButton.IsEnabled = false beállítása megtörténik a memóriában, és ez a változás jelzésre kerül a WPF-nek. Bár a gomb letiltása technikailag azonnal érvénybe lép (a gomb nem reagál kattintásra), a vizuális renderelés (pl. a gomb szürkén megjelenése) nem feltétlenül történik meg azonnal, mert a fő szál még nem adta át a vezérlést a renderelési ciklusnak.
 
@@ -106,7 +106,7 @@ private async void StartButton_Click(object sender, RoutedEventArgs e)
 
 
 A végrehajtás a következőképpen alakul:
-`
+```console
 [StartButton_Click esemény elindul]
           |
           v
@@ -130,7 +130,7 @@ A végrehajtás a következőképpen alakul:
           |
           v
 [Vége]
-`
+```
 
 Az aszinkron kód esetében a fő különbség az, hogy a fő szál nem blokkolódik, és a WPF-nek többször is lehetősége van a UI frissítésére a metódus futása közben.
 
