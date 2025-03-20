@@ -85,7 +85,7 @@ Az üzenethurok az, ami figyeli az eseményeket (pl. kattintások, billentyűle�
 Ekkor a WPF végignézi az összes változást (pl. IsEnabled = false, "Feldolgozás...", "Kész!...", IsEnabled = true), és egyetlen frissítési ciklusban kirajzolja az aktuális állapotot – ami a te esetedben a "Kész! A művelet befejeződött." szöveg és az engedélyezett gomb.
 
 
-Aszinkron működés
+## Aszinkron működés
 
 Ahhoz, hogy a "Feldolgozás..." felirat megjelenjen, aszinkron módon kell megírni a kódot, hogy a fő szál ne blokkolódjon. Ehhez használhatjuk az async és await kulcsszavakat, valamint a Task.Delay-t a várakozáshoz. Íme a javított kód:
 
@@ -176,7 +176,7 @@ A StartButton_Click befejeződik, és a fő szál visszaadja a vezérlést az ü
 A WPF egyetlen frissítési ciklusban kirajzolja az aktuális állapotot: a "Kész! A művelet befejeződött." szöveget és az engedélyezett gombot.
 
 
-Összegzés:
+**Összegzés:**
 Az async jelzi, hogy a metódus aszinkron műveleteket tartalmazhat, és lehetővé teszi, hogy a metódus "szüneteljen" anélkül, hogy blokkolná a fő szálat.
 Az await megvárja a mögötte lévő Task befejezését, de közben a fő szál felszabadul, és visszaadja a vezérlést az üzenethuroknak. A Task maga nem feltétlenül fut külön szálon (pl. Task.Delay esetében nem), hanem egy aszinkron mechanizmust használ.
 Amikor az await-elt Task befejeződik (pl. 3 másodperc múlva), a metódus folytatása visszaáll a fő szálra, és a kód továbbfut ott, ahol az await "szüneteltette".
