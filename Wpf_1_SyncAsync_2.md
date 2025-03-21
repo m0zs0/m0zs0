@@ -141,6 +141,9 @@ A végrehajtás a következőképpen alakul:
 [Vége]
 ```
 
+![AsynchronousProgramming](PICTURES/AsynchronousProgramming.png)
+
+
 Az aszinkron kód esetében a fő különbség az, hogy a fő szál nem blokkolódik, és a WPF-nek többször is lehetősége van a UI frissítésére a metódus futása közben.
 
 Az aszinkron kódban a fő szál (UI thread) továbbra is egyetlen szálként működik, de az async és await használatával lehetővé tesszük, hogy a szál ne blokkolódjon hosszú műveletek (pl. várakozás) alatt. Nézzük meg, mi történik soronként:
