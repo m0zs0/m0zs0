@@ -1,5 +1,14 @@
 # Szinkron és Aszinkron kód
 
+**Szinkron műveletek:**
+
+A szinkron programozásban minden művelet egymás után, sorrendben történik.
+Egy művelet befejezéséig a következő nem indul el. Ha valami hosszú ideig tart, például hálózati kérés vagy fájlírás, akkor a program "megáll", amíg az nem fejeződik be.
+
+**Aszinkron műveletek:**
+
+Az aszinkron programozás lényege, hogy egy műveletet elindítunk, de nem várjuk meg a befejezését, hanem folytatjuk a következő műveletet.
+Az aszinkron kódok általában a felhasználói élmény javítását célozzák, mivel nem blokkolják az UI szálat, így a program folyamatosan reagálhat a felhasználói interakciókra (például gombnyomásra, ablakok frissítésére).
 
 ```cs
 XAML:
