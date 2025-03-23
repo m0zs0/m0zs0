@@ -12,7 +12,7 @@ A nehézségi szint egy csúszka (slider) segítségével állítható, ahol a k
 
 **A felhasználói felületet az XAML definiálja, amely egy rácsot (Grid) tartalmaz három sorral:**
 
-- Első sor: Pontszám és nehézségi csúszka.
+- Első sor: Pontszám és nehézség beállítása.
 - Második sor: 3x3-as játékmező (UniformGrid).
 - Harmadik sor: "Új játék" gomb.
 
@@ -60,12 +60,14 @@ private void DifficultySlider_ValueChanged(object sender, RoutedPropertyChangedE
         string[] difficultyLevels = { "Könnyű", "Normál", "Nehéz", "Profi" };
         int level = (int)DifficultySlider.Value;
         DifficultyText.Text = difficultyLevels[level];
+        System.Diagnostics.Debug.WriteLine($"Difficulty level: {DifficultySlider.Value}");
     }
 }
 ```
 `Slider`: 0-tól 3-ig terjedő értékek ("Könnyű" = 0, "Profi" = 3).
 
 Null-ellenőrzés: Biztosítja, hogy a DifficultyText létezik, elkerülve a NullReferenceException-t.
+A `System.Diagnostics.Debug.WriteLine($"Difficulty level: {DifficultySlider.Value}");` utasítással az Output ablakba tudunk mindenféle futásközbeni adatot kiírni. 
 
 **Aszinkron működés részletes magyarázata**
 
@@ -119,7 +121,15 @@ private async Task RunPositionAsync(int row, int col)
     while (isGameRunning)
     {
         int maxAnimals = 4 - (int)DifficultySlider.Value; // 4, 3, 2, 1
-        int currentAnimals = gameButtons.Cast<Button>().Count(b => b.Tag.ToString() == "animal");
+        //int currentAnimals = gameButtons.Cast<Button>().Count(b => b.Tag.ToString() == "animal");
+        int currentAnimals = 0;
+        foreach (Button b in gameButtons)
+        {
+            if (b.Tag.ToString() == "animal")
+            {
+                currentAnimals++;
+            }
+        }
 
         if (currentAnimals < maxAnimals)
         {
@@ -157,8 +167,7 @@ private async Task ShowAnimalAsync(int row, int col)
     if (btn.Tag.ToString() == "hole")
     {
         double difficulty = DifficultySlider.Value;
-        double baseShowTime = 2.5 - (difficulty * 0.75); // Könnyű: 2.5s, Profi: 0.25s
-        double showTime = random.NextDouble() * baseShowTime + 0.25; // Minimum 0.25s
+        double showTime = random.NextDouble() * (2.5 - difficulty * 0.75) + 0.25; // Könnyű: 2.5s, Profi: 0.25s
 
         btn.Content = new Image
         {
@@ -186,8 +195,7 @@ private async Task ShowAnimalAsync(int row, int col)
 }
 ```
 `if (btn.Tag.ToString() == "hole")`: Csak üres lyukon jelenhet meg állat.
-`baseShowTime`: A nehézségtől függően csökken (Könnyű: 2.5s, Profi: 0.25s).
-`showTime`: Véletlenszerű időtartam a baseShowTime és egy minimális 0.25s között, így a "Profi" szinten nagyon rövid ideig (0.25-0.5s) látható az állat.
+`showTime`: Véletlenszerű időtartam, amivel biztosítjuk, hogy a "Profi" szinten nagyon rövid ideig (0.25-0.5s) látható az állat.
 `await Task.Delay(TimeSpan.FromSeconds(showTime))`: Ez a sor szünetelteti a metódust a megadott ideig, miközben az UI szál szabad marad. Az await itt azt jelenti, hogy a metódus "várakozik", de nem blokkol, és az idő letelte után folytatja a végrehajtást.
 `Visszaállítás`: Ha az állatot nem kattintották le, visszaáll lyukká.
 
@@ -256,14 +264,17 @@ Teljes XAML kód
 </Window>
 ```
 ```cs
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Wpf_1_WhacAMole
 {
@@ -272,9 +283,9 @@ namespace Wpf_1_WhacAMole
         private Button[,] gameButtons = new Button[3, 3];
         private Random random = new Random();
         private int score = 0;
-        private bool isGameRunning = false;
         private string holeImage = "pack://application:,,,/Images/hole.png";
         private string animalImage = "pack://application:,,,/Images/animal.png";
+        private bool isGameRunning = false;
 
         public MainWindow()
         {
@@ -284,6 +295,7 @@ namespace Wpf_1_WhacAMole
 
         private void InitializeGame()
         {
+            // Gombok létrehozása
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
@@ -299,27 +311,31 @@ namespace Wpf_1_WhacAMole
                     GameGrid.Children.Add(btn);
                 }
             }
-            StartGame();
+
+            
         }
 
         private void DifficultySlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            // Ellenőrizzük, hogy a DifficultyText létezik-e
             if (DifficultyText != null)
             {
                 string[] difficultyLevels = { "Könnyű", "Normál", "Nehéz", "Profi" };
                 int level = (int)DifficultySlider.Value;
                 DifficultyText.Text = difficultyLevels[level];
+                System.Diagnostics.Debug.WriteLine($"Difficulty level: {DifficultySlider.Value}");
             }
         }
+
 
         private async Task ShowAnimalAsync(int row, int col)
         {
             Button btn = gameButtons[row, col];
             if (btn.Tag.ToString() == "hole")
             {
-                double difficulty = DifficultySlider.Value;
-                double baseShowTime = 2.5 - (difficulty * 0.75); // Könnyű: 2.5s, Profi: 0.25s
-                double showTime = random.NextDouble() * baseShowTime + 0.25; // Minimum 0.25s
+                double difficulty = DifficultySlider.Value; // 0-3
+                // Megjelenési idő
+                double showTime = random.NextDouble() * (2.5 - difficulty * 0.75) + 0.25; // Könnyű: 2.5s, Profi: 0.25s
 
                 btn.Content = new Image
                 {
@@ -352,6 +368,7 @@ namespace Wpf_1_WhacAMole
             score = 0;
             ScoreText.Text = "0";
 
+            // Minden pozícióhoz külön feladat indítása
             List<Task> positionTasks = new List<Task>();
             for (int i = 0; i < 3; i++)
             {
@@ -361,12 +378,13 @@ namespace Wpf_1_WhacAMole
                 }
             }
 
+            // Várjuk, amíg a játék véget ér (10 pont vagy kézi leállítás)
             while (isGameRunning && score < 10)
             {
-                await Task.Delay(100);
+                await Task.Delay(100); // Kis szünet, hogy ne terhelje a CPU-t
             }
 
-            isGameRunning = false;
+            isGameRunning = false; // Leállítja az összes pozíció futását
             ResetAnimals();
 
             if (score >= 10)
@@ -379,11 +397,22 @@ namespace Wpf_1_WhacAMole
         {
             while (isGameRunning)
             {
+                // Maximális állatok száma a nehézség alapján
                 int maxAnimals = 4 - (int)DifficultySlider.Value; // 4, 3, 2, 1
-                int currentAnimals = gameButtons.Cast<Button>().Count(b => b.Tag.ToString() == "animal");
 
-                if (currentAnimals < maxAnimals)
+                //int currentAnimals = gameButtons.Cast<Button>().Count(b => b.Tag.ToString() == "animal");
+                int currentAnimals = 0;
+                foreach (Button b in gameButtons)
                 {
+                    if (b.Tag.ToString() == "animal")
+                    {
+                        currentAnimals++;
+                    }
+                }
+
+                if (currentAnimals < maxAnimals) // Csak akkor jelenik meg új állat, ha van hely
+                {
+                    // Nehézség alapján várakozási idő: Profi szinten hosszabb szünet
                     double difficulty = DifficultySlider.Value;
                     double waitTime = random.NextDouble() * (1 + difficulty) + 0.5; // Könnyű: 0.5-1.5s, Profi: 0.5-3.5s
                     await Task.Delay(TimeSpan.FromSeconds(waitTime));
@@ -395,7 +424,7 @@ namespace Wpf_1_WhacAMole
                 }
                 else
                 {
-                    await Task.Delay(100);
+                    await Task.Delay(100); // Kis várakozás, ha nincs hely
                 }
             }
         }
@@ -411,13 +440,13 @@ namespace Wpf_1_WhacAMole
                 btn.Content = new Image { Source = new BitmapImage(new Uri(holeImage)) };
                 btn.Tag = "hole";
             }
-
+            
             ScoreText.Text = score.ToString();
         }
 
         private void RestartGame(object sender, RoutedEventArgs e)
         {
-            isGameRunning = false;
+            isGameRunning = false; // Megállítja a futó ciklusokat
             StartGame();
         }
 
