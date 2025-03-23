@@ -13,6 +13,9 @@ ahol:
     - ,,, A három vessző elválasztó jelzi, hogy az erőforrás az alkalmazás gyökérkönyvtárában található.
     - /Images/hole.png Ez az útvonal az erőforrás helyét jelzi az alkalmazás csomagjában.
 
+![animal](PICTURES/animal.png)
+![whole](PICTURES/whole.png)
+
 
 ## XAML Felület
 ### Felépítés: A főablak egy Grid-et tartalmaz, amely 3 részből áll:
