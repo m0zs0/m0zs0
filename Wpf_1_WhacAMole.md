@@ -23,7 +23,7 @@ Képek hozzáadása a projekt mappájához:
 - Solution Explorer-ben Projektnevének gyorsmenüje / "Add" -> "New Folder": Images
 - Images gyorsmenüje / "Add" -> "Existing Item": Válaszd ki a hozzáadni kívánt képeket.
 - A hozzáadott képre gyorsmenüje / "Properties" / "Build Action": "Resource"
-- A képet ezután a következő URI formátummal érheted el: pack://application:,,,/Images/hole.png
+- A képet ezután a következő URI formátummal érheted el: "pack://application:,,,/Images/hole.png"
 ahol:
     - pack://application: Ez a prefix jelzi, hogy az erőforrás az alkalmazás csomagjában található.
     - ,,, A három vessző elválasztó jelzi, hogy az erőforrás az alkalmazás gyökérkönyvtárában található.
