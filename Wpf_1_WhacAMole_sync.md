@@ -1,4 +1,15 @@
 # Whac A Mole Sync - rossz megoldás
+**A képek projekthez adása**
+Képek hozzáadása a projekt mappájához:
+- Solution Explorer-ben Projektnevének gyorsmenüje / "Add" -> "New Folder": Images
+- Images gyorsmenüje / "Add" -> "Existing Item": Válaszd ki a hozzáadni kívánt képeket.
+- A hozzáadott képre gyorsmenüje / "Properties" / "Build Action": "Resource"
+- A képet ezután a következő URI formátummal érheted el: "pack://application:,,,/Images/hole.png"
+ahol:
+    - pack://application: Ez a prefix jelzi, hogy az erőforrás az alkalmazás csomagjában található.
+    - ,,, A három vessző elválasztó jelzi, hogy az erőforrás az alkalmazás gyökérkönyvtárában található.
+    - /Images/hole.png Ez az útvonal az erőforrás helyét jelzi az alkalmazás csomagjában.
+
 
 ## XAML Felület
 ### Felépítés: A főablak egy Grid-et tartalmaz, amely 3 részből áll:
