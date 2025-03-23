@@ -18,7 +18,7 @@ A nehézségi szint egy csúszka (slider) segítségével állítható, ahol a k
 
 A csúszka (Slider) 4 fokozattal rendelkezik: "Könnyű", "Normál", "Nehéz", "Profi".
 
-**A képek projekthez adása
+**A képek projekthez adása**
 Képek hozzáadása a projekt mappájához:
 - Solution Explorer-ben Projektnevének gyorsmenüje / "Add" -> "New Folder": Images
 - Images gyorsmenüje / "Add" -> "Existing Item": Válaszd ki a hozzáadni kívánt képeket.
