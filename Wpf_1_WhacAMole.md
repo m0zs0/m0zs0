@@ -25,9 +25,9 @@ Képek hozzáadása a projekt mappájához:
 - A hozzáadott képre gyorsmenüje / "Properties" / "Build Action": "Resource"
 - A képet ezután a következő URI formátummal érheted el: pack://application:,,,/Images/hole.png
 ahol:
--- pack://application: Ez a prefix jelzi, hogy az erőforrás az alkalmazás csomagjában található.
--- ,,, A három vessző elválasztó jelzi, hogy az erőforrás az alkalmazás gyökérkönyvtárában található.
--- /Images/hole.png Ez az útvonal az erőforrás helyét jelzi az alkalmazás csomagjában.
+- - pack://application: Ez a prefix jelzi, hogy az erőforrás az alkalmazás csomagjában található.
+- - ,,, A három vessző elválasztó jelzi, hogy az erőforrás az alkalmazás gyökérkönyvtárában található.
+- - /Images/hole.png Ez az útvonal az erőforrás helyét jelzi az alkalmazás csomagjában.
 
 **MainWindow.xaml.cs**
 A logika aszinkron módon (async/await) van implementálva, hogy az állatok megjelenése és eltűnése függetlenül, valós idejű hatást keltve történjen.
