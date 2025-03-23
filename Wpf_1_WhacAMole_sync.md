@@ -14,7 +14,7 @@ ahol:
     - /Images/hole.png Ez az útvonal az erőforrás helyét jelzi az alkalmazás csomagjában.
 
 ![animal](PICTURES/animal.png)
-![whole](PICTURES/whole.png)
+![hole](PICTURES/hole.png)
 
 
 ## XAML Felület
