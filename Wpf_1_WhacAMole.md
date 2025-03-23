@@ -1,5 +1,7 @@
 # Whack-a-Mole WPF Játék
 
+![Wpf_1_WhacAMole](PICTURES/Wpf_1_WhacAMole.png)
+
 A játékban egy 3x3-as mátrixban lyukak vannak, amelyekből véletlenszerűen állatok bukkannak fel. 
 
 A cél, hogy az állatokra kattintsunk pontokért (+1). 
