@@ -1,4 +1,7 @@
 # Whac A Mole Sync - rossz megoldás
+
+![Wpf_1_WhacAMole](PICTURES/Wpf_1_WhacAMole.png)
+
 **A képek projekthez adása**
 Képek hozzáadása a projekt mappájához:
 - Solution Explorer-ben Projektnevének gyorsmenüje / "Add" -> "New Folder": Images
