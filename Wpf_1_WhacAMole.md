@@ -31,6 +31,9 @@ ahol:
     - ,,, A három vessző elválasztó jelzi, hogy az erőforrás az alkalmazás gyökérkönyvtárában található.
     - /Images/hole.png Ez az útvonal az erőforrás helyét jelzi az alkalmazás csomagjában.
 
+![animal](PICTURES/animal.png)
+![hole](PICTURES/hole.png)
+
 **MainWindow.xaml.cs**
 A logika aszinkron módon (async/await) van implementálva, hogy az állatok megjelenése és eltűnése függetlenül, valós idejű hatást keltve történjen.
 
