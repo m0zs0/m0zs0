@@ -1,5 +1,6 @@
+
+## 2. Feladat
 ```console
-1. Feladat
 SELECT `letszam` 
   FROM `megye` 
   WHERE `nev`= 'Vas';
@@ -11,8 +12,9 @@ SELECT `letszam` AS "A Vas megyeiek létszáma"
 SELECT `letszam` AS "A Vas megyeiek létszáma"
   FROM `megye` 
   WHERE `nev`= 'Vas';
-
-3. Feladat: Összekapcsolás WHERE-el
+```
+## 3. Feladat: Összekapcsolás WHERE-el
+```console
 SELECT SUM(aero.letszam) AS "Somogyi részvétel"
   FROM megye AS m, aerob AS aero
   WHERE m.kod = aero.mkod 
@@ -22,8 +24,9 @@ SELECT SUM(aerob.letszam) AS "Somogyi részvétel"
   FROM megye INNER JOIN aerob ON 
     megye.kod = aerob.mkod
   WHERE nev = 'Somogy';
-
-4. Feladat
+```
+## 4. Feladat
+```console
 SELECT aerob.letszam AS "Zalai egészségesek"
   FROM megye, allapot, aerob
   WHERE megye.kod = aerob.mkod AND aerob.allkod = allapot.kod
@@ -36,15 +39,17 @@ SELECT aerob.letszam AS "Zalai egészségesek"
   WHERE aerob.nem = 1
     AND allapot.nev = "egészséges"
     AND megye.nev = "Zala";
-
-5. Feladat: Allekérdezés
+```
+## 5. Feladat: Allekérdezés
+```console
 SELECT COUNT(letszam) AS "Hevesnél kevesebb"
   FROM megye 
   	WHERE letszam < (SELECT letszam
                       FROM megye
                       WHERE nev = "Heves" );
-
-6. Feladat
+```
+## 6. Feladat
+```console
 SELECT SUM(aerob.letszam) / megye.letszam * 100  AS "Tanulók aránya Pest megyében"
   FROM megye, aerob
   WHERE megye.kod = aerob.mkod
@@ -53,24 +58,27 @@ SELECT SUM(aerob.letszam) / megye.letszam * 100  AS "Tanulók aránya Pest megy�
 SELECT SUM(aerob.letszam) / megye.letszam * 100  AS "Tanulók aránya Pest megyében"
   FROM megye INNER JOIN aerob ON megye.kod = aerob.mkod 
   WHERE megye.nev = "Pest";
-
-7. Feladat
+```
+## 7. Feladat
+```console
 SELECT megye.nev, aerob.letszam AS "Egészséges lányok" 
   FROM megye, aerob, allapot
   WHERE megye.kod = aerob.mkod AND aerob.allkod = allapot.kod
    AND aerob.nem = 0
    AND allapot.nev = "egészséges"
   ORDER BY aerob.letszam DESC;
-
-8. Feladat
+```
+## 8. Feladat
+```console
 SELECT megye.nev, SUM(aerob.letszam) / megye.letszam * 100 AS "Arány"
   FROM megye, aerob
   WHERE megye.kod = aerob.mkod
   GROUP BY megye.kod
   ORDER BY Arány DESC
   LIMIT 1;
-
-9. Feladat
+```
+## 9. Feladat
+```console
 SELECT megye.nev, SUM(aerob.letszam) / megye.letszam AS "Arány"
   FROM megye, aerob, allapot
   WHERE megye.kod = aerob.mkod AND aerob.allkod = allapot.kod
